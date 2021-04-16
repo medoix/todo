@@ -18,7 +18,7 @@ Stores data in a simple JSON document in `$HOME/.todo/todo`.
 
 ## Improvements
 
-- [X] Create config system
+- [ ] Create config system
 
   - [ ] Allow rows OR columns
 
