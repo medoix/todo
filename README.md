@@ -17,9 +17,12 @@ Stores data in a simple JSON document in `$HOME/.todo/todo`.
 * Tab: Move in forms
 
 ## Improvements
-- [] Create config system
-  - [] Allow rows OR columns
-  - [] Define Note editor program
+
+- [X] Create config system
+
+  - [ ] Allow rows OR columns
+
+  - [ ] Define Note editor program
 
 ## Install
 
