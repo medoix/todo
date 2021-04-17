@@ -24,6 +24,8 @@ Stores data in a simple JSON document in `$HOME/.todo/todo`.
 
   - [ ] Define Note editor program
 
+- [ ] Auto Save
+
 ## Install
 
 ### Golang
