@@ -3,6 +3,8 @@ package main
 import (
 	"encoding/json"
 	"io"
+	"os"
+	"log"
 )
 
 type Item struct {
@@ -48,14 +50,53 @@ func (c *Content) MoveItem(fromlane, fromidx, tolane, toidx int) {
 	// https://github.com/golang/go/wiki/SliceTricks
 	c.Items[fromlane] = append(c.Items[fromlane][:fromidx], c.Items[fromlane][fromidx+1:]...)
 	c.Items[tolane] = append(c.Items[tolane][:toidx], append([]Item{item}, c.Items[tolane][toidx:]...)...)
+	saveToDo(todoPath())
+}
+
+func todoPath() string {
+	if len(os.Args) > 1 {
+		return os.Args[1]
+	}
+	home, _ := os.UserHomeDir()
+	os.Mkdir(home+"/.todo", os.ModePerm)
+	return home + "/.todo/todo"
+}
+
+/*
+TODO: Look into moving this variable into below function
+and use pointers / dereference
+*/
+var content *Content
+
+func openToDo(path string) {
+	f, err := os.Open(path)
+	if err == nil {
+		content = NewContentIo(f)
+		f.Close()
+	}
+
+	if content == nil {
+		content = NewContentDefault()
+	}
+}
+
+func saveToDo(path string) {
+	f, err := os.Create(path)
+	if err != nil {
+		log.Fatal(err)
+	}
+	content.Save(f)
+	f.Close()
 }
 
 func (c *Content) DelItem(lane, idx int) {
 	c.Items[lane] = append(c.Items[lane][:idx], c.Items[lane][idx+1:]...)
+	saveToDo(todoPath())
 }
 
 func (c *Content) AddItem(lane, idx int, title string) {
 	c.Items[lane] = append(c.Items[lane][:idx], append([]Item{Item{title, ""}}, c.Items[lane][idx:]...)...)
+	saveToDo(todoPath())
 }
 
 func (c *Content) Save(w io.Writer) {
