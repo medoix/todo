@@ -33,6 +33,8 @@ func NewLanes(content *Content, app *tview.Application) *Lanes {
 		l.lanes[i].SetTitle(l.content.GetLaneTitle(i))
 		l.lanes[i].SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 			switch event.Key() {
+			case tcell.KeyEsc:
+				l.pages.ShowPage("quit")
 			case tcell.KeyUp:
 				if l.inselect {
 					l.up()
